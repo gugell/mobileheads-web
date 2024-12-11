@@ -1,0 +1,24 @@
+---
+import { languages } from '../i18n/ui';
+import { createLocalizedPath } from '../utils/navigation';
+
+interface Props {
+  currentLang: string;
+  currentPath: string;
+}
+
+const { currentLang, currentPath } = Astro.props;
+---
+
+<div class="language-picker flex space-x-2">
+  {Object.entries(languages).map(([lang, label]) => (
+    <a 
+      href={createLocalizedPath(lang, currentPath)}
+      class={`px-2 py-1 rounded transition-colors ${
+        currentLang === lang ? 'bg-purple-700' : 'hover:bg-purple-800'
+      }`}
+    >
+      {label}
+    </a>
+  ))}
+</div>

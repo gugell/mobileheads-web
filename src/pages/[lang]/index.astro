@@ -1,0 +1,39 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ui, languages } from '../../i18n/ui';
+
+export function getStaticPaths() {
+  return Object.keys(languages).map(lang => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+const t = ui[lang];
+---
+
+<Layout title={t['home.title']}>
+  <div class="text-center">
+    <h1 class="text-4xl font-bold mb-6">{t['home.title']}</h1>
+    <p class="text-xl mb-8">{t['home.subtitle']}</p>
+    
+    <div class="bg-white p-4 md:p-8 rounded-lg shadow-md mb-12">
+      <h2 class="text-2xl font-bold mb-4">{t['home.nextMeetup']}</h2>
+      <p class="mb-4">Join us for our next exciting meetup! We regularly organize events featuring talks about iOS, Android, and cross-platform development.</p>
+      <a href="https://www.meetup.com/mobileheads-austria/" class="inline-block bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">Join on Meetup</a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
+      <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
+        <h3 class="text-xl font-bold mb-2">Share Knowledge</h3>
+        <p>Present your experiences and learn from others in the mobile development community.</p>
+      </div>
+      <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
+        <h3 class="text-xl font-bold mb-2">Network</h3>
+        <p>Connect with fellow mobile developers and expand your professional network.</p>
+      </div>
+      <div class="bg-white p-4 md:p-6 rounded-lg shadow-md">
+        <h3 class="text-xl font-bold mb-2">Grow Together</h3>
+        <p>Be part of a growing community and help shape the future of mobile development.</p>
+      </div>
+    </div>
+  </div>
+</Layout>

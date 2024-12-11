@@ -1,0 +1,37 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import BlogCard from '../../../components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+import { languages, ui } from '../../../i18n/ui';
+
+export function getStaticPaths() {
+  return Object.keys(languages).map(lang => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+const t = ui[lang];
+
+const allPosts = await getCollection('blog');
+const posts = allPosts.filter(post => post.slug.startsWith(lang + '/'));
+const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<Layout title={t['blog.title']}>
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-3xl md:text-4xl font-bold mb-8">{t['blog.title']}</h1>
+    <div class="grid gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {sortedPosts.map(post => {
+        const slug = post.slug.split('/').slice(1).join('/');
+        return (
+          <BlogCard
+            title={post.data.title}
+            excerpt={post.data.excerpt}
+            date={post.data.date.toLocaleDateString()}
+            slug={slug}
+            image={post.data.image}
+          />
+        );
+      })}
+    </div>
+  </div>
+</Layout>

@@ -1,0 +1,52 @@
+---
+import { languages, defaultLang, ui } from '../i18n/ui';
+import { getCurrentLang, getPathWithoutLang } from '../utils/navigation';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+const currentPath = Astro.url.pathname;
+const lang = getCurrentLang(currentPath, languages, defaultLang);
+const pathWithoutLang = getPathWithoutLang(currentPath);
+const t = ui[lang];
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="MobileHeads Austria - Mobile Development Community" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} | MobileHeads Austria</title>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <Header lang={lang} currentPath={pathWithoutLang} t={t} />
+    
+    <main class="flex-grow max-w-6xl mx-auto px-4 py-8 w-full">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --accent: 136, 58, 234;
+    --accent-light: 224, 204, 250;
+    --accent-dark: 49, 10, 101;
+  }
+  html {
+    font-family: system-ui, sans-serif;
+    background: #f6f6f6;
+  }
+  body {
+    margin: 0;
+  }
+</style>

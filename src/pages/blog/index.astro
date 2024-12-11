@@ -1,0 +1,25 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<Layout title="Blog">
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-4xl font-bold mb-8">Blog</h1>
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {sortedPosts.map(post => (
+        <BlogCard
+          title={post.data.title}
+          excerpt={post.data.excerpt}
+          date={post.data.date.toLocaleDateString()}
+          slug={post.slug}
+          image={post.data.image}
+        />
+      ))}
+    </div>
+  </div>
+</Layout>
